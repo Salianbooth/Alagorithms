@@ -8,6 +8,7 @@
 #include  <iostream>
 # include  <string>
 #include <map>
+#include <vector>
 
 using namespace  std;
 
@@ -52,6 +53,19 @@ public:
         }
         return cur->freqs_;
     }
+
+    //前序遍历字典树
+    void preOrder(){
+        string word;
+        vector<string> wordlist ;
+        preOrder(root_,word,wordlist);
+        for(auto word:wordlist){
+            cout << word << endl;
+        }
+        cout << endl;
+
+    }
+
 private:
     //结点的定义
     struct TireNode{
@@ -63,6 +77,20 @@ private:
         map<char,TireNode*> nodeMap_;
     };
 
+private:
+    void preOrder(TireNode* cur, string word,vector<string> &wordlist){
+        //前序遍历VLR
+        if(cur != root_){
+            word.push_back(cur -> ch_);
+            if(cur->freqs_ > 0){
+                wordlist.emplace_back(word);
+            }
+        }
+        //递归处理孩子结点
+        for(auto pair : cur->nodeMap_){
+            preOrder(pair.second,word,wordlist);
+        }
+    }
 private:
     //定义树的类型
     TireNode* root_;   // 指向树的根节点
@@ -88,5 +116,7 @@ int main(){
     cout << "china : " <<tire.query("china") << endl;
     cout << "ch : " <<tire.query("ch") << endl;
 
+    cout << "======================" << endl;
+    tire.preOrder();
     return 0;
 }
